@@ -7,6 +7,8 @@ app.secret_key = 'super_secret_key'
 # Página inicial
 @app.route('/')
 def index():
+    if 'loginUser' not in session:
+        return redirect(url_for('login'))
     return render_template('index.html')
 
 # Rota para login
@@ -59,7 +61,7 @@ def register_user():
 @app.route('/register_product', methods=['GET', 'POST'])
 def register_product():
     if 'loginUser' not in session:
-        return redirect(url_for('login'))
+        return render_template('login.html', msg='Voce precisa logar para acessar')
     
     loginUser = session['loginUser']
     tipoUser = session['tipoUser']
@@ -105,7 +107,7 @@ def register_product():
 @app.route('/list_products')
 def list_products():
     if 'loginUser' not in session:
-        return redirect(url_for('login'))
+        return render_template('login.html', products=products, msg='Voce precisa logar para acessar')
 
     loginUser = session['loginUser']
 
