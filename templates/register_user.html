@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+   
+    <div>
+        
+        <h2>Cadastrar Usuário</h2>
+        <form method="POST">
+            <label for="loginUser">Usuário:</label>
+            <input type="text" name="loginUser" required>
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" required>
+            <label for="tipoUser">Tipo de Usuário:</label>
+            <select name="tipoUser" required>
+                <option value="super">Super</option>
+                <option value="normal">Normal</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        
+    </div>
+</body>
+</html>

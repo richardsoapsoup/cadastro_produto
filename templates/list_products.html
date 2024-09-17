@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Lista de Produtos</h1>
+        <a href="{{ url_for('index') }}">Início</a> |
+        <a href="{{ url_for('register_product') }}">Cadastrar Produto</a> |
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </header>
+    <main>
+        {% if products %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product[0] }}</td>
+                            <td>{{ product[1] }}</td>
+                            <td>{{ product[2] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhum produto cadastrado.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

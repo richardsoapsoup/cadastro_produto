@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div>
+        <h2>Login</h2>
+        <form method="POST">
+            <label for="loginUser">Usuário:</label>
+            <input type="text" name="loginUser" id="loginUser" required>
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" id="senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <p>Não tem conta? <a href="/register_user">Cadastre-se aqui</a></p>
+    </div>
+</body>
+</html>

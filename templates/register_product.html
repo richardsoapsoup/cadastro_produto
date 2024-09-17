@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produto</title>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div>
+        <h2>Cadastrar Produto</h2>
+        <form method="POST" onsubmit="showProductMessage()">
+            <label for="nome">Nome do Produto:</label>
+            <input type="text" name="nome" required>
+            <label for="qtde">Quantidade:</label>
+            <input type="number" name="qtde" required>
+            <label for="preco">Preço:</label>
+            <input type="number" step="0.01" name="preco" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
+    </div>
+</body>
+</html>

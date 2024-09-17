@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Sistema de Gestão</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div>
+        <h1>Bem-vindo, {{ session['loginUser'] }}</h1>
+        <a href="/register_product">Cadastrar Produto</a>
+        <a href="{{ url_for('list_products') }}">Ver Produtos Cadastrados</a>
+        <a href="/logout">Sair</a>
+    </div>
+</body>
+</html>

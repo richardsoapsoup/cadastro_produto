@@ -1,0 +1,185 @@
+/* Estilo geral */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5; /* Cor de fundo suave */
+    margin: 0;
+}
+
+/* Cabeçalhos */
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Cabeçalho da lista de produtos */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Main */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Tabela */
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+    background-color: #333;
+    color: #fff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Formulários */
+form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 0 auto; /* Centraliza o formulário horizontalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"], input[type="password"], select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Botões */
+button[type="submit"] {
+    padding: 10px;
+    background-color: #5a67d8; /* Azul suave */
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    
+}
+
+button[type="submit"]:hover {
+    background-color: #434aa8; /* Escurece o botão ao passar o mouse */
+    transform: scale(1.05);
+}
+
+/* Centralização do conteúdo */
+body > div {
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Links gerais */
+a {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: #5a67d8;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+a:hover {
+    background-color: #434aa8;
+    transform: scale(1.05);
+}
+
+/* Estilo para o botão de voltar */
+a.btn-voltar {
+    display: inline-block;
+    margin-top: 20px; /* Espaçamento acima do botão */
+    padding: 10px 20px;
+    background-color: #e53e3e; /* Vermelho */
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+a.btn-voltar:hover {
+    background-color: #c53030; /* Vermelho mais escuro no hover */
+    transform: scale(1.05);
+}
+
+form > input[type="text"], 
+form > input[type="number"], 
+form > select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    
+}
+
+input[name="preco"] {
+    margin-bottom: 30px; /* Aumenta o espaçamento entre Preço e o botão */
+}
+
+form label{
+    display: block; /* Garante que cada label ocupe uma linha completa */
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+
