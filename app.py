@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, url_for, f
 from models import get_db_connection
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key'
+app.secret_key = 'ASKDL244LFD'
 
 # Página inicial
 @app.route('/')
