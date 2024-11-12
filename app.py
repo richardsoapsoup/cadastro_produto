@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for, flash
+from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify
 from models import get_db_connection
 import custoso as cus
 import pandas as pd
@@ -256,7 +256,109 @@ def visualizar_transacoes():
 
 
 
+@app.route('/api/produtos', methods=['POST'])
+def inserir_produto():
+    data = request.get_json()
+    nome = data.get('nome')
+    qtde = data.get('qtde')
+    preco = data.get('preco')
+    loginUser = session.get('loginUser')  # Usuário atual logado
 
+
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("INSERT INTO produtos (nome, loginUser, qtde, preco) VALUES (%s, %s, %s, %s)",
+                    (nome, loginUser, qtde, preco))
+        conn.commit()
+        return jsonify({"message": "Produto inserido com sucesso"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Buscar produto por nome ou ID
+@app.route('/api/produtos/<identificador>', methods=['GET'])
+def buscar_produto(identificador):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        # Tenta buscar o produto pelo ID, se falhar, busca pelo nome
+        cur.execute("SELECT * FROM produtos WHERE id = %s OR nome = %s", (identificador, identificador))
+        produto = cur.fetchone()
+        
+        if produto:
+            produto_dict = {
+                "id": produto[0],
+                "nome": produto[1],
+                "loginUser": produto[2],
+                "qtde": produto[3],
+                "preco": produto[4]
+            }
+            return jsonify(produto_dict), 200
+        else:
+            return jsonify({"error": "Produto não encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Listar todos os produtos
+@app.route('/api/produtos', methods=['GET'])
+def listar_produtos():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("SELECT * FROM produtos")
+        produtos = cur.fetchall()
+        
+        produtos_list = []
+        for produto in produtos:
+            produtos_list.append({
+                "id": produto[0],
+                "nome": produto[1],
+                "loginUser": produto[2],
+                "qtde": produto[3],
+                "preco": produto[4]
+            })
+
+        return jsonify(produtos_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Listar todos os usuários
+@app.route('/api/usuarios', methods=['GET'])
+def listar_usuarios():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("SELECT * FROM users")
+        usuarios = cur.fetchall()
+        
+        usuarios_list = []
+        for usuario in usuarios:
+            usuarios_list.append({
+                "loginUser": usuario[0],
+                "senha": usuario[1],
+                "tipoUser": usuario[2]
+            })
+
+        return jsonify(usuarios_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
     
    
 
