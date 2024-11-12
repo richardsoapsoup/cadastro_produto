@@ -1,8 +1,16 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from models import get_db_connection
+import custoso as cus
+import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'ASKDL244LFD'
+
+
+
 
 # Página inicial
 @app.route('/')
@@ -20,7 +28,8 @@ def login():
         
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE loginUser = %s AND senha = %s", (loginUser, senha))
+        comando = cur.execute("SELECT * FROM users WHERE loginUser = %s AND senha = %s", (loginUser, senha))
+        cus.exemploThread(comando)
         user = cur.fetchone()
         
         cur.close()
@@ -131,5 +140,126 @@ def logout():
     session.pop('loginUser', None)
     return redirect(url_for('login'))
 
+# Rota para vender um produto
+@app.route('/sell_product/<nome>', methods=['POST'])
+def sell_product(nome):
+    if 'loginUser' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Reduz a quantidade em 1 do produto, se a quantidade for maior que 0
+    cur.execute("UPDATE produtos SET qtde = qtde - 1 WHERE loginUser = %s AND nome = %s AND qtde > 0", 
+                (session['loginUser'], nome))
+    
+    # Registrar a venda na tabela 'vendas'
+    cur.execute("""
+        INSERT INTO vendas (nome_produto, loginUser, tipo_transacao, quantidade)
+        VALUES (%s, %s, %s, %s)
+    """, (nome, session['loginUser'], 'venda', 1))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    flash(f'Você vendeu uma unidade de {nome}.')
+    return redirect(url_for('list_products'))
+
+
+
+
+@app.route('/buy_product/<nome>', methods=['POST'])
+def buy_product(nome):
+    if 'loginUser' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Atualiza a quantidade de produtos no inventário
+    cur.execute("UPDATE produtos SET qtde = qtde + 1 WHERE loginUser = %s AND nome = %s", 
+                (session['loginUser'], nome))
+    
+    # Define a data da compra para hoje
+    data_compra = datetime.now().date()
+    
+    # Verifica se já existe uma entrada para o produto na data de hoje
+    cur.execute("""
+    SELECT quantidade FROM vendas 
+    WHERE nome_produto = %s AND loginUser  = %s AND tipo_transacao = %s AND data = %s
+    """, (nome, session['loginUser'], 'compra', data_compra))
+    
+    resultado = cur.fetchone()
+
+    if resultado:
+        # Atualiza a quantidade na transação existente
+        nova_quantidade = resultado[0] + 1
+        cur.execute("""
+            UPDATE vendas 
+            SET quantidade = %s 
+            WHERE nome_produto = %s AND loginUser  = %s AND tipo_transacao = %s AND data = %s
+        """, (nova_quantidade, nome, session['loginUser'], 'compra', data_compra))
+    else:
+        # Insere uma nova entrada com a quantidade inicial de 1
+        cur.execute("""
+            INSERT INTO vendas (nome_produto, loginUser, tipo_transacao, quantidade, data)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (nome, session['loginUser'], 'compra', 1, data_compra))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    flash(f'Você comprou uma unidade de {nome}.')
+    return redirect(url_for('list_products'))
+
+    
+        
+    
+
+
+@app.route('/transacoes')
+def visualizar_transacoes():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    # Seleciona todas as vendas agrupadas por data e nome do produto
+    cur.execute("SELECT nome_produto, data, SUM(quantidade) AS quantidade FROM vendas GROUP BY nome_produto, data")
+    vendas = cur.fetchall()
+    
+    # Converte os dados para um DataFrame do Pandas
+    df = pd.DataFrame(vendas, columns=['nome_produto', 'data', 'quantidade'])
+    print(df)  # Verifique se os dados estão corretos
+    
+    # Cria o gráfico de barras
+    fig = px.bar(
+        df,
+        x='data',
+        y='quantidade',
+        color='nome_produto',
+        title='Vendas de Produtos ao Longo do Tempo',
+        labels={'data': 'Data', 'quantidade': 'Quantidade de Vendas'}
+    )
+    
+    fig.update_layout(
+        template="plotly_white",
+        xaxis_title="Data",
+        yaxis_title="Quantidade de Vendas"
+    )
+    
+    # Converte o gráfico para HTML para exibir na página
+    graph_html = fig.to_html(full_html=False)
+    
+    return render_template('transacoes.html', graph_html=graph_html)
+
+
+
+
+
+    
+   
+
 if __name__ == '__main__':
     app.run(debug=True)
+    

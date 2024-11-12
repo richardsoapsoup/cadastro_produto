@@ -58,6 +58,11 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
+td form {
+    display: inline-block;
+    margin: 0 5px;
+}
+
 th {
     font-weight: bold;
 }
@@ -180,6 +185,29 @@ form label{
     margin-bottom: 10px;
     font-weight: bold;
     color: #333;
+}
+
+
+.btn-vender, .btn-comprar {
+    background-color: #4c6ef5; /* Azul */
+    color: white;
+    padding: 6px 12px;    
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 14px;
+}
+
+.btn-vender:hover {
+    background-color: #3b5bdb;
+}
+
+.btn-comprar:hover {
+    background-color: #3b5bdb;
+}
+
+/* Remove a sombra e ajusta o espaçamento */
+td form {
+    box-shadow: none;
 }
 
 

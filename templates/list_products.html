@@ -21,6 +21,7 @@
                         <th>Nome</th>
                         <th>Quantidade</th>
                         <th>Preço</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,17 @@
                             <td>{{ product[0] }}</td>
                             <td>{{ product[1] }}</td>
                             <td>{{ product[2] }}</td>
+                            <td>
+                                <!-- Botão de Vender -->
+                                <form action="{{ url_for('sell_product', nome=product[0]) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn-vender">Vender</button>
+                                </form>
+                                
+                                <!-- Botão de Comprar -->
+                                <form action="{{ url_for('buy_product', nome=product[0]) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn-comprar">Comprar</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -37,6 +49,5 @@
             <p>Nenhum produto cadastrado.</p>
         {% endif %}
     </main>
-    <p>{{msg}}</p>
 </body>
 </html>

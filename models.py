@@ -4,10 +4,10 @@ from psycopg2 import sql
 # Função para abrir a conexão com o banco de dados
 def get_db_connection():
     conn = psycopg2.connect(
-        host="dpg-crl0au2j1k6c738llksg-a.oregon-postgres.render.com",
-        database="flask_aplicativo",
-        user="flask_aplicativo_user",
-        password="cDSi5A5EW0ljKrAgmda2BPydRdv3ifjF"
+        host="localhost",
+        database="aplicativo_flask",
+        user="postgres",
+        password="123"
     )
     return conn
 
@@ -31,6 +31,17 @@ def create_tables():
         loginUser VARCHAR(50) REFERENCES users(loginUser),
         qtde INT,
         preco DECIMAL(10, 2)
+    );
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS vendas (
+        id SERIAL PRIMARY KEY,
+        nome_produto VARCHAR(100),
+        loginUser VARCHAR(50) REFERENCES users(loginUser),
+        tipo_transacao VARCHAR(10),  -- 'compra' ou 'venda'
+        quantidade INT,
+        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """)
 
